@@ -24,8 +24,7 @@ export const requestLocationPermission =
 
     if (status === 'blocked') {
       await openSettings();
-      // return await checkLocationPermission()
-      //Todo: checkLocationPermission()
+      return await checkLocationPermission();
     }
 
     const permissionMapper: Record<RNPermissionStatus, PermissionStatus> = {
