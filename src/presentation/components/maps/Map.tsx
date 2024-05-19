@@ -14,7 +14,7 @@ export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
   const mapRef = useRef<MapView>();
   const cameraLocation = useRef<Location>(initialLocation);
 
-  const { getLocation } = useLocationStore();
+  const { getLocation, lastKnownLocation } = useLocationStore();
 
   const moveCameraToLocation = (location: Location) => {
     if (!mapRef.current) return;
@@ -24,6 +24,9 @@ export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
   };
 
   const moveToCurrentLocation = async () => {
+    if (!lastKnownLocation) {
+      moveCameraToLocation(initialLocation);
+    }
     const location = await getLocation();
     if (!location) return;
     moveCameraToLocation(location);
@@ -42,7 +45,7 @@ export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
-        <Marker
+        {/* <Marker
           coordinate={{
             latitude: 37.78825,
             longitude: -122.4324,
@@ -50,7 +53,7 @@ export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
           title="Título del marcador"
           description="Descripción del marcador"
           image={require('../../../assets/custom-marker.png')}
-        />
+        /> */}
       </MapView>
       <Fab
         iconName="compass-outline"
