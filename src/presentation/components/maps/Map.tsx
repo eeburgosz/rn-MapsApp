@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Location } from '../../../infrastructure/interfaces';
+import { Fab } from '../ui/Fab';
 
 interface Props {
   showUserLocation?: boolean;
@@ -30,6 +31,11 @@ export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
           image={require('../../../assets/custom-marker.png')}
         />
       </MapView>
+      <Fab
+        iconName="compass-outline"
+        onPress={() => console.log('HOLA')}
+        style={{ bottom: 20, right: 20 }}
+      />
     </>
   );
 };
