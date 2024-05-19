@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Location } from '../../../infrastructure/interfaces';
 import { Fab } from '../ui/Fab';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocationStore } from '../../store/location/useLocationStore';
 
 interface Props {
@@ -13,6 +13,8 @@ interface Props {
 export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
   const mapRef = useRef<MapView>();
   const cameraLocation = useRef<Location>(initialLocation);
+
+  const [isFollowingUser, setIsFollowingUser] = useState(true);
 
   const { getLocation, lastKnownLocation, watchLocation, clearWatchLocation } =
     useLocationStore();
@@ -41,8 +43,9 @@ export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (lastKnownLocation) moveCameraToLocation(lastKnownLocation);
-  }, [lastKnownLocation]);
+    if (lastKnownLocation && isFollowingUser)
+      moveCameraToLocation(lastKnownLocation);
+  }, [lastKnownLocation, isFollowingUser]);
 
   return (
     <>
@@ -56,7 +59,8 @@ export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
           longitude: cameraLocation.current.longitude,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
-        }}>
+        }}
+        onTouchStart={() => setIsFollowingUser(false)}>
         {/* <Marker
           coordinate={{
             latitude: 37.78825,
@@ -67,6 +71,11 @@ export const Map = ({ showUserLocation = true, initialLocation }: Props) => {
           image={require('../../../assets/custom-marker.png')}
         /> */}
       </MapView>
+      <Fab
+        iconName={isFollowingUser ? 'walk-outline' : 'accessibility-outline'}
+        onPress={() => setIsFollowingUser(!isFollowingUser)}
+        style={{ bottom: 80, right: 20 }}
+      />
       <Fab
         iconName="compass-outline"
         onPress={moveToCurrentLocation}
