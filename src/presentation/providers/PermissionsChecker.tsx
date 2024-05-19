@@ -10,9 +10,17 @@ export const PermissionsChecker = ({ children }: PropsWithChildren) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   useEffect(() => {
-    if (locationStatus === 'granted') navigation.navigate('MapScreen');
-    else if (locationStatus !== 'undetermined')
-      navigation.navigate('PermissionsScreen');
+    if (locationStatus === 'granted') {
+      // navigation.navigate('MapScreen'); //! El .nagigate me permite volver a la página anterior y no debo poder hacerlo.
+      navigation.reset({
+        routes: [{ name: 'MapScreen' }],
+      });
+    } else if (locationStatus !== 'undetermined') {
+      // navigation.navigate('PermissionsScreen');
+      navigation.reset({
+        routes: [{ name: 'PermissionsScreen' }],
+      });
+    }
   }, [locationStatus]);
 
   //! Esto va a verificar los permisos la primera vez que se inicia la app.
