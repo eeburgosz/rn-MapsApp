@@ -40,6 +40,7 @@ export const requestLocationPermission =
 
 export const checkLocationPermission = async (): Promise<PermissionStatus> => {
   let status: RNPermissionStatus = 'unavailable';
+
   if (Platform.OS === 'ios') {
     status = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
   } else if (Platform.OS === 'android') {
