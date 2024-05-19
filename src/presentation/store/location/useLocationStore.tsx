@@ -8,7 +8,7 @@ import {
 
 interface LocationState {
   lastKnownLocation: Location | null;
-  userLocations: Location[];
+  userLocationsList: Location[];
   watchId: number | null;
 
   getLocation: () => Promise<Location | null>;
@@ -18,7 +18,7 @@ interface LocationState {
 
 export const useLocationStore = create<LocationState>()((set, get) => ({
   lastKnownLocation: null,
-  userLocations: [],
+  userLocationsList: [],
   watchId: null,
 
   getLocation: async () => {
@@ -33,7 +33,7 @@ export const useLocationStore = create<LocationState>()((set, get) => ({
     const id = watchCurrentLocation(location => {
       set({
         lastKnownLocation: location,
-        userLocations: [...get().userLocations, location],
+        userLocationsList: [...get().userLocationsList, location],
       });
     });
     set({ watchId: id });
